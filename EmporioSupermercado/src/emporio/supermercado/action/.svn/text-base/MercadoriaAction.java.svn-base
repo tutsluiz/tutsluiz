@@ -1,0 +1,144 @@
+package emporio.supermercado.action;
+
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Actions;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
+
+import com.opensymphony.xwork2.ActionSupport;
+
+import emporio.supermercado.business.MercadoriaBusiness;
+import emporio.supermercado.domain.Mercadoria;
+import emporio.supermercado.util.Util;
+
+@Namespace("/sistema/mercadoria")
+public class MercadoriaAction extends ActionSupport {
+	private static final long serialVersionUID = 1L;
+	
+	private Mercadoria mercadoria = new Mercadoria();
+	
+	public MercadoriaAction() {
+		super();
+	}
+	
+	@Actions(value = {
+		@Action(value = "/sistema/mercadoria", results = {
+				@Result(name = "ok", location = "/sistema/mercadoria.jsp")
+		}),
+		@Action(value = "/sistema/mercadoria/", results = {
+				@Result(name = "ok", location = "/sistema/mercadoria.jsp")
+		})
+	})
+	public String init() {
+		return "ok";
+	}
+
+	@Action(value = "salvar", results = {
+			@Result(name = "erro", location = "/sistema/mercadoria.jsp"),
+			@Result(name = "sucesso", location = "/sistema/mercadoria.jsp")
+	})
+	public String salvar() {
+		Boolean hasError = false;
+		
+		if(Util.isEmpty(mercadoria.getCodigo())) {
+			addActionError("É obrigatório preenchimento do código!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(mercadoria.getNome())) {
+			addActionError("É obrigatório preenchimento do nome!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(mercadoria.getDescricaoCurta())){
+			addActionError("É obrigatório preenchimento da descrição curta!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(mercadoria.getDataCadastro())) {
+			addActionError("É obrigatório preenchimento da data de cadastro!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(mercadoria.getPrecoCusto())) {
+			addActionError("É obrigatório preenchimento do preço de custo!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(mercadoria.getPrecoVenda())) {
+			addActionError("É obrigatório preenchimento do preco de venda!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(mercadoria.getEstoque())) {
+			addActionError("É obrigatório preenchimento do estoque!");
+			hasError = true;
+		}
+		
+		if(hasError)
+			return "erro";
+		
+		try {
+			if(mercadoria.getId() == null || "".equals(mercadoria.getId())) {
+				new MercadoriaBusiness().salvar(mercadoria);
+			} else {
+				new MercadoriaBusiness().atualizar(mercadoria);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			addActionError("Erro ao salvar mercadoria. " + e.getMessage());
+			return "erro";
+		}
+		
+		
+		addActionMessage("Mercadoria cadastrada com sucesso!");
+		mercadoria = null;
+		return "sucesso";
+	}
+	
+	@Action(value = "prepararEdicao", results = {
+			@Result(name = "sucesso", location = "/sistema/mercadoria.jsp")
+	})
+	public String prepararEdicao() {
+		try {
+			mercadoria = new MercadoriaBusiness().buscarPorId(mercadoria.getId());
+			return "sucesso";
+		} catch (Exception e) {
+			return "erro";
+		}
+	}
+	
+	@Action(value = "remover", results = {
+			@Result(name = "erro", location = "/sistema/mercadoria.jsp"),
+			@Result(name = "sucesso", location = "/sistema/mercadoria.jsp")
+	})
+	public String remover() {
+		try {
+			new MercadoriaBusiness().remover(mercadoria);
+			addActionMessage("Mercadoria removida com sucesso!");
+			mercadoria = null;
+			return "sucesso";
+		} catch (Exception e) {
+			return "erro";
+		}
+	}
+	
+	public Mercadoria getMercadoria() {
+		return mercadoria;
+	}
+	public void setMercadoria(Mercadoria mercadoria) {
+		this.mercadoria = mercadoria;
+	}
+
+	public List<Mercadoria> getMercadorias() {
+		try {
+			return new MercadoriaBusiness().buscarTodos();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+}

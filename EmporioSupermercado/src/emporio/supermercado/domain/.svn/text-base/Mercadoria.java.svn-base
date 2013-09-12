@@ -1,0 +1,168 @@
+package emporio.supermercado.domain;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "TMERCADORIA")
+public class Mercadoria implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	private Long id;
+	private String codigo;
+	private String nome;
+	private String marca;
+	private String departamento;
+	private String artigo;
+	private String descricaoCurta;
+	private String descricaoLonga;
+	private String estoque;
+	private String dataCadastro;
+	private String precoCusto;
+	private String precoVenda;
+	private String peso;
+	
+
+	public Mercadoria() {
+		super();
+	}
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Mercadoria other = (Mercadoria) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getMarca() {
+		return marca;
+	}
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+	public String getDepartamento() {
+		return departamento;
+	}
+
+	public void setDepartamento(String departamento) {
+		this.departamento = departamento;
+	}
+
+	public String getArtigo() {
+		return artigo;
+	}
+
+	public void setArtigo(String artigo) {
+		this.artigo = artigo;
+	}
+
+	public String getDescricaoCurta() {
+		return descricaoCurta;
+	}
+
+	public void setDescricaoCurta(String descricaoCurta) {
+		this.descricaoCurta = descricaoCurta;
+	}
+
+	public String getDescricaoLonga() {
+		return descricaoLonga;
+	}
+
+	public void setDescricaoLonga(String descricaoLonga) {
+		this.descricaoLonga = descricaoLonga;
+	}
+
+	public String getEstoque() {
+		return estoque;
+	}
+
+	public void setEstoque(String estoque) {
+		this.estoque = estoque;
+	}
+
+	public String getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(String dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	public String getPrecoCusto() {
+		return precoCusto;
+	}
+
+	public void setPrecoCusto(String precoCusto) {
+		this.precoCusto = precoCusto;
+	}
+
+	public String getPrecoVenda() {
+		return precoVenda;
+	}
+
+	public void setPrecoVenda(String precoVenda) {
+		this.precoVenda = precoVenda;
+	}
+
+	public String getPeso() {
+		return peso;
+	}
+
+	public void setPeso(String peso) {
+		this.peso = peso;
+	}
+
+}

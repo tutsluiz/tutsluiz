@@ -1,0 +1,134 @@
+package emporio.supermercado.action;
+
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Actions;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
+
+import com.opensymphony.xwork2.ActionSupport;
+
+import emporio.supermercado.business.ClienteBusiness;
+import emporio.supermercado.domain.Cliente;
+import emporio.supermercado.util.Util;
+
+@Namespace("/sistema/cliente")
+public class ClienteAction extends ActionSupport {
+	private static final long serialVersionUID = 1L;
+	
+	private Cliente cliente = new Cliente();
+	
+	public ClienteAction() {
+		super();
+	}
+	
+	@Actions(value = {
+		@Action(value = "/sistema/cliente", results = {
+				@Result(name = "ok", location = "/sistema/cliente.jsp")
+		}),
+		@Action(value = "/sistema/cliente/", results = {
+				@Result(name = "ok", location = "/sistema/cliente.jsp")
+		})
+	})
+	public String init() {
+		return "ok";
+	}
+
+	@Action(value = "salvar", results = {
+			@Result(name = "erro", location = "/sistema/cliente.jsp"),
+			@Result(name = "sucesso", location = "/sistema/cliente.jsp")
+	})
+	public String salvar() {
+		Boolean hasError = false;
+		
+		if(Util.isEmpty(cliente.getRazaoSocial())) {
+			addActionError("É obrigatório preenchimento da Razão Social!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(cliente.getCnpj())) {
+			addActionError("É obrigatório preenchimento do CNPJ!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(cliente.getCep())){
+			addActionError("É obrigatório preenchimento do CEP!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(cliente.getDataAbertura())) {
+			addActionError("É obrigatório preenchimento da Data de Abertura!");
+			hasError = true;
+		}
+		
+		Pattern pattern = Pattern.compile("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		if(!"".equals(cliente.getEmail()) && !pattern.matcher(cliente.getEmail()).matches()) {
+			addActionError("O email informado não é válido!");
+			hasError = true;
+		}
+		
+		if(hasError)
+			return "erro";
+		
+		try {
+			if(cliente.getId() == null || "".equals(cliente.getId())) {
+				new ClienteBusiness().salvar(cliente);
+			} else {
+				new ClienteBusiness().atualizar(cliente);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			addActionError("Erro ao salvar cliente. " + e.getMessage());
+			return "erro";
+		}
+		
+		
+		addActionMessage("Cliente cadastrado com sucesso!");
+		cliente = null;
+		return "sucesso";
+	}
+	
+	@Action(value = "prepararEdicao", results = {
+			@Result(name = "sucesso", location = "/sistema/cliente.jsp")
+	})
+	public String prepararEdicao() {
+		try {
+			cliente = new ClienteBusiness().buscarPorId(cliente.getId());
+			return "sucesso";
+		} catch (Exception e) {
+			return "erro";
+		}
+	}
+	
+	@Action(value = "remover", results = {
+			@Result(name = "erro", location = "/sistema/cliente.jsp"),
+			@Result(name = "sucesso", location = "/sistema/cliente.jsp")
+	})
+	public String remover() {
+		try {
+			new ClienteBusiness().remover(cliente);
+			addActionMessage("Cliente removido com sucesso!");
+			return "sucesso";
+		} catch (Exception e) {
+			return "erro";
+		}
+	}
+	
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public List<Cliente> getClientes() {
+		try {
+			return new ClienteBusiness().buscarTodos();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+}

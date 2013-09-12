@@ -1,0 +1,140 @@
+package emporio.supermercado.action;
+
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Actions;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
+
+import com.opensymphony.xwork2.ActionSupport;
+
+import emporio.supermercado.business.FornecedorBusiness;
+import emporio.supermercado.domain.Fornecedor;
+import emporio.supermercado.util.Util;
+
+@Namespace("/sistema/fornecedor")
+public class FornecedorAction extends ActionSupport {
+	private static final long serialVersionUID = 1L;
+	
+	private Fornecedor fornecedor = new Fornecedor();
+	
+	public FornecedorAction() {
+		super();
+	}
+	
+	@Actions(value = {
+		@Action(value = "/sistema/fornecedor", results = {
+				@Result(name = "ok", location = "/sistema/fornecedor.jsp")
+		}),
+		@Action(value = "/sistema/fornecedor/", results = {
+				@Result(name = "ok", location = "/sistema/fornecedor.jsp")
+		})
+	})
+	public String init() {
+		return "ok";
+	}
+
+	@Action(value = "salvar", results = {
+			@Result(name = "erro", location = "/sistema/fornecedor.jsp"),
+			@Result(name = "sucesso", location = "/sistema/fornecedor.jsp")
+	})
+	public String salvar() {
+		Boolean hasError = false;
+		
+		if(Util.isEmpty(fornecedor.getRazaoSocial())) {
+			addActionError("É obrigatório preenchimento da Razão Social!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(fornecedor.getCnpj())) {
+			addActionError("É obrigatório preenchimento do CNPJ!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(fornecedor.getInscricaoEstadual())){
+			addActionError("É obrigatório preenchimento da Inscrição Estadual!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(fornecedor.getCep())){
+			addActionError("É obrigatório preenchimento do CEP!");
+			hasError = true;
+		}
+		
+		if(Util.isEmpty(fornecedor.getDataAbertura())) {
+			addActionError("É obrigatório preenchimento da Data de Abertura!");
+			hasError = true;
+		}
+		
+		Pattern pattern = Pattern.compile("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		if(!"".equals(fornecedor.getEmail()) && !pattern.matcher(fornecedor.getEmail()).matches()) {
+			addActionError("O email informado não é válido!");
+			hasError = true;
+		}
+		
+		if(hasError)
+			return "erro";
+		
+		try {
+			if(fornecedor.getId() == null || "".equals(fornecedor.getId())) {
+				new FornecedorBusiness().salvar(fornecedor);
+			} else {
+				new FornecedorBusiness().atualizar(fornecedor);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			addActionError("Erro ao salvar fornecedor. " + e.getMessage());
+			return "erro";
+		}
+		
+		
+		addActionMessage("Fornecedor cadastrado com sucesso!");
+		fornecedor = null;
+		return "sucesso";
+	}
+	
+	@Action(value = "prepararEdicao", results = {
+			@Result(name = "sucesso", location = "/sistema/fornecedor.jsp")
+	})
+	public String prepararEdicao() {
+		try {
+			fornecedor = new FornecedorBusiness().buscarPorId(fornecedor.getId());
+			return "sucesso";
+		} catch (Exception e) {
+			return "erro";
+		}
+	}
+	
+	@Action(value = "remover", results = {
+			@Result(name = "erro", location = "/sistema/fornecedor.jsp"),
+			@Result(name = "sucesso", location = "/sistema/fornecedor.jsp")
+	})
+	public String remover() {
+		try {
+			new FornecedorBusiness().remover(fornecedor);
+			addActionMessage("Fornecedor removido com sucesso!");
+			fornecedor = null;
+			return "sucesso";
+		} catch (Exception e) {
+			return "erro";
+		}
+	}
+	
+	public Fornecedor getFornecedor() {
+		return fornecedor;
+	}
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
+	}
+
+	public List<Fornecedor> getFornecedores() {
+		try {
+			return new FornecedorBusiness().buscarTodos();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+}

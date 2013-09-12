@@ -1,0 +1,79 @@
+package emporio.supermercado.dao;
+
+import java.sql.Connection;
+import java.util.List;
+
+import javax.transaction.Transaction;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
+import emporio.supermercado.domain.Mercadoria;
+
+public class MercadoriaDAO {
+	private Session session;
+	
+	public MercadoriaDAO() {
+		this.session = HibernateUtil.getSession();
+	}
+	
+	public Long salvar(Mercadoria mercadoria) throws Exception {
+		try {
+			session = HibernateUtil.getSession();
+			Long id = (Long) session.save(mercadoria);
+			session.beginTransaction().commit();
+			return id;
+		} catch(Exception e) {
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
+	}
+	
+	public void atualizar(Mercadoria mercadoria) throws Exception {
+		try {
+			session.update(mercadoria);
+			session.beginTransaction().commit();
+		} catch(Exception e) {
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Mercadoria> buscarTodos() throws Exception {
+		try {
+			Criteria query = session.createCriteria(Mercadoria.class);
+			return query.list();
+		} catch(Exception e) {
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
+	}
+	
+	public Mercadoria buscarPorId(Long id) throws Exception {
+		try {
+			Criteria query = session.createCriteria(Mercadoria.class);
+			query.add(Restrictions.idEq(id));
+			return (Mercadoria) query.uniqueResult();
+		} catch(Exception e) {
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
+	}
+	
+	public void remover(Mercadoria mercadoria) throws Exception {
+		try {
+			session.delete(mercadoria);
+			session.beginTransaction().commit();
+		} catch(Exception e) {
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
+	}
+}
