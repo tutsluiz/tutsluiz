@@ -11,8 +11,7 @@
 		</script>
 	</jsp:attribute>
 
-	<jsp:attribute name="scriptsBody">
-	
+	<jsp:attribute name="scriptsBody">	
 		<script type="text/javascript">
 			$('input[name="cliente.cnpj"]').mask('99.999.999/9999-99');
 			$('input[name="cliente.cep"]').mask('99.999-999');
@@ -21,14 +20,13 @@
 			$('input[name="cliente.dataAbertura"]').mask('99/99/9999');
 
 		</script>
-
 	</jsp:attribute>
 
 
 
 	<jsp:body>
 
-<!-- ------------------------- Topo e menu da pagina selecionada no menu principal -->
+<!-- ------------------------- Botoes de acão novo, excluir --------------------------------->
 
 <div class="row">
 <br>
@@ -36,21 +34,21 @@
     <h4>Cliente PJ</h4>
    </div>
    
-   <div class="span8">
-   
-  <a href="#myModal" role="button" class="btn" data-toggle="modal"
-					data-backdrop="static" data-target="#myModal">
+<div class="span8">
+  <a href="#responsive" role="button" class="btn" data-toggle="modal" data-backdrop="static" data-target="#responsive">
     <i class="icon-plus"></i> Novo Cliente 
   </a>
-  
-  <a href="#myModal" role="button" class="btn" data-toggle="modal">
+  <a href="#myModal" role="button" class="btn" data-toggle="modal" data-backdrop="static" data-target="#myModal">
      <i class="icon-trash "></i> Remover Cliente
   </a>
-   </div>
+</div>
+   
+   
+ <!-- ------------------- Input e botao busca  ------------------------>
    
    <div class="span2 text-right">
    
-    <form class=" navbar-form navbar-search navbar-form pull-left" action="${pageContext.request.contextPath}/sistema/cliente/buscar" method="post"> 
+    <form class=" navbar-form navbar-search navbar-form pull-left" action="${pageContext.request.contextPath}/sistema/cliente" method="post"> 
       
            <!--  MSG DE ERRO DE VALIDAÇÃO DO FORMULARIO -->
 		<s:if test="hasActionErrors()">
@@ -81,7 +79,15 @@
 
 <!-- ------------------- js bootstrap modal  ------------------------
 
+			var c = document.getElementById("chkId");
+			var txt = document.getElementById("txtName");
+			var hrf = document.getElementById("forGrid");
 
+			if(c !== undefined) {
+			    c.onclick = function(event) {
+			        txt.value = !this.checked;
+			    }
+			}
 
 
 			$('#InfroTextSubmit').click(function(){
@@ -102,7 +108,7 @@
 			      
 			});
 
-		<script type="text/javascript">
+				<script type="text/javascript">
    $('#myModal').modal({
         backdrop: true,
         keyboard: true,
@@ -116,13 +122,15 @@
 </script>
 
 
-------------------------------------------------------------------------->
-<!-- --------------- modal ------------------------------------ -->		
 
+------------------------------------------------------------------------->
+
+
+<!-- --------------- modal ------------------------------------ --	
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog"
 			aria-labelledby="myModalLabel" aria-hidden="true">
      
-     <!--  MSG DE ERRO DE VALIDAÇÃO DO FORMULARIO -->
+     <!--  MSG DE ERRO DE VALIDAÇÃO DO FORMULARIO --
 		<s:if test="hasActionErrors()">
 			<div class="alert alert-block">
 				<button type="button" class="close" data-dismiss="alert">×</button>
@@ -136,12 +144,12 @@
 				<s:actionmessage />
 			</div>
 		</s:if>
-    <!-- ------------------------------------------ -->
+    <!-- ------------------------------------------ --
 
   <div class="modal-header">
     <!--  Comentado para retirar fechar do modal pelo X
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    -->
+    --
     <h3 id="myModalLabel">Cliente Pessoa Juridica</h3>
   </div>
   
@@ -166,9 +174,7 @@
 					
 					<label>*CNPJ:</label>
 					<input type="text" name="cliente.cnpj" value="${cliente.cnpj}"
-							placeholder="Número 
-
-do CNPJ do cliente">
+							placeholder="Número do CNPJ do cliente">
 				</div>
 				
 				<div class="span3">	
@@ -189,9 +195,7 @@ do CNPJ do cliente">
 					
 					<label>*CEP:</label>
 					<input type="text" name="cliente.cep" value="${cliente.cep}"
-							placeholder="Número do 
-
-CEP">
+							placeholder="Número do CEP">
 					
 					<label>Telefone:</label>
 					<input type="text" name="cliente.telefone"
@@ -205,9 +209,7 @@ CEP">
 				<div class="span3">
 					<label>Email:</label>
 					<input type="text" name="cliente.email" value="${cliente.email}"
-							placeholder="E-
-
-mail do cliente">
+							placeholder="E-mail do cliente">
 					
 					<label>*Data Abertura:</label>
 					<input type="text" name="cliente.dataAbertura" value="${d}"
@@ -230,11 +232,11 @@ mail do cliente">
     <button class="btn btn-primary" type="submit">Salvar</button>
   </div>
 
-</div>
+</div>-->
 
 <!--   ----------------------------- Grid  ----------------------------------------->
         
-		<form id="gridCliente">
+		<form action="${pageContext.request.contextPath}/sistema/cliente">
 			<pg:pager id="p" maxPageItems="10" maxIndexPages="50"
 				export="offset,currentPageNumber=pageNumber" scope="request"
 				url="${pageContext.request.contextPath}/sistema/cliente/">
@@ -255,20 +257,21 @@ mail do cliente">
 						<c:forEach var="c" items="${clientes}">
 							<pg:item>
 							<tr>
-							    <td valign="middle"><input type="checkbox" id="${c.id}"
-										value="${c.id}" />
-            					
-									<td valign="middle"><a data-toggler="modal"
-										href="${pageContext.request.contextPath}/sistema/cliente/prepararEdicao?cliente.id=${c.id}"
-										data-target="#myModal" role="button">${c.razaoSocial}</a></td>
+							    <td valign="middle"><input type="checkbox" value="<c:out value="${id}"/>" />
+            					<td valign="middle">
+            					    <a href="${pageContext.request.contextPath}/sistema/cliente/prepararEdicao?cliente.id=${c.id}"
+										 role="button">${c.razaoSocial}
+								    </a></td>
 								<td valign="middle">${c.cnpj}</td>
 								<td valign="middle">${c.cep}</td>
 								<td valign="middle">${c.dataAbertura}</td>
 								<td valign="middle">${c.observacao}</td>
-                                <td width="21" height="20"><a
-										href="${pageContext.request.contextPath}/sistema/cliente/remover?cliente.id=${c.id}"><img
-											src="${pageContext.request.contextPath}/img/icone excluir.jpg">
-										<c:out value="${id}" /></a></td>
+                                <td width="21" height="20">
+                                    <a href="${pageContext.request.contextPath}/sistema/cliente/remover?cliente.id=${c.id}">
+                                    <img src="${pageContext.request.contextPath}/img/icone excluir.jpg">
+										<c:out value="${id}"/>
+								    </a>
+							    </td>
 							</tr>
 							</pg:item>
 						</c:forEach>

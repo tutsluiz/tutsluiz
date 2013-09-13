@@ -23,14 +23,11 @@ public class ClienteAction extends ActionSupport {
 	
 	private Cliente cliente = new Cliente();
 	private String d;
-	private List<Cliente> clientes = null;
-
+	private List<Cliente> clientes;
 	
 	public ClienteAction() {
 		super();
 	}
-	
-	
 	
 	
 	@Actions(value = {
@@ -189,17 +186,20 @@ public class ClienteAction extends ActionSupport {
 		}
 	}
 	
-/*************************** Busca Clientes   *********************************/
-	@Action(value = "buscar", results = {
-			@Result(name = "sucesso", location = "/sistema/cliente.jsp")
-	})
+/*************************** Busca Clientes  *********************************/
 	
+	@Action(value = "buscar", results = {
+			@Result(name = "sucesso", location = "/sistema/cliente.jsp"),
+			@Result(name="erro", location="/sistema/cliente.jsp")
+	}) 
+
 	public String buscar() {
 		try {
-			clientes = new ClienteBusiness().buscarPorRazaoSocial(cliente.getRazaoSocial());
-			d = cliente.getDataAbertura();
+			new ClienteBusiness().buscarPorRazaoSocial(cliente.getRazaoSocial());
+			addActionMessage("Busca realizada com sucesso!");
 			return "sucesso";
 		} catch (Exception e) {
+			addActionError("Falha ao buscar cliente.");
 			return "erro";
 		}
 	}
@@ -229,15 +229,16 @@ public class ClienteAction extends ActionSupport {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+	
 
 	public List<Cliente> getClientes() {
 		try {
 		
-		if(clientes != null || !"".equals(cliente.getRazaoSocial())){
-			    return new ClienteBusiness().buscarPorRazaoSocial(cliente.getRazaoSocial());
-		}else{
-				return new ClienteBusiness().buscarTodos();
-		}
+		//if(cliente.getRazaoSocial().equals("") || cliente.getRazaoSocial().equals(null) ){
+		//    return new ClienteBusiness().buscarTodos();
+		//}else{
+			return new ClienteBusiness().buscarTodos();	
+	//	}
 
 		} catch (Exception e) {
 			e.printStackTrace();
