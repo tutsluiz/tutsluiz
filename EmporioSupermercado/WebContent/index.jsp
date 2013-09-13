@@ -16,10 +16,15 @@
 
 <body>
 	<div class="box-login-center">
-		
+					
 		<form action="${pageContext.request.contextPath}/login" method="POST">
 			<legend>Sistema Prático Empório</legend>
-			
+			<s:if test="hasActionErrors()">
+				<div class="alert alert-block">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<s:actionerror />
+				</div>
+			</s:if>			
 			<label>Nome de usuário:</label>
 			<input type="text" name="usuario.username" class="input-xlarge" placeholder="Digite seu usuário">
 			
@@ -31,13 +36,7 @@
 			
 			<br/>
 			<br/>
-			
-			<s:if test="hasActionErrors()">
-				<div class="alert alert-block">
-					<button type="button" class="close" data-dismiss="alert">×</button>
-					<s:actionerror />
-				</div>
-			</s:if>
+
 		</form>
 	</div>
 </body>

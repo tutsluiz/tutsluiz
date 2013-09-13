@@ -29,10 +29,10 @@
 		<!-- Link CSS do bootstrap -->
 
         <link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
-        <link href="${pageContext.request.contextPath}/css/bootstrap-modal.css" rel="stylesheet">
 		<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"/>
 		<link href="${pageContext.request.contextPath}/css/all.css" rel="stylesheet">
 		
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 	    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.1.js"></script>
 	    <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
 	    
@@ -106,7 +106,7 @@
   <div class="navbar-inner">
       <div class="nav-collapse collapse" id="corpo" >
         <!-- .nav, .navbar-search, .navbar-form, etc -->   
-             <!--  <jsp:include page="/sistema/modal.jsp"></jsp:include> -->
+        
           <jsp:doBody />
           
       </div>

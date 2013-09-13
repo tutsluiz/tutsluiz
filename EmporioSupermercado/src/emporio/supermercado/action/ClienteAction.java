@@ -4,10 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.catalina.connector.Request;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.dispatcher.RequestMap;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -28,6 +30,10 @@ public class ClienteAction extends ActionSupport {
 	public ClienteAction() {
 		super();
 	}
+	
+	public ClienteAction(List<Cliente> cliente){  
+        this.clientes = cliente;  
+    }  	
 	
 	
 	@Actions(value = {
@@ -186,16 +192,16 @@ public class ClienteAction extends ActionSupport {
 		}
 	}
 	
-/*************************** Busca Clientes  *********************************/
+/*************************** Busca Clientes  *********************************
 	
 	@Action(value = "buscar", results = {
 			@Result(name = "sucesso", location = "/sistema/cliente.jsp"),
 			@Result(name="erro", location="/sistema/cliente.jsp")
 	}) 
 
-	public String buscar() {
+	public String buscar(){
 		try {
-			new ClienteBusiness().buscarPorRazaoSocial(cliente.getRazaoSocial());
+			clientes = new ClienteBusiness().buscarPorRazaoSocial(cliente.getRazaoSocial());
 			addActionMessage("Busca realizada com sucesso!");
 			return "sucesso";
 		} catch (Exception e) {
@@ -233,12 +239,12 @@ public class ClienteAction extends ActionSupport {
 
 	public List<Cliente> getClientes() {
 		try {
-		
-		//if(cliente.getRazaoSocial().equals("") || cliente.getRazaoSocial().equals(null) ){
-		//    return new ClienteBusiness().buscarTodos();
-		//}else{
-			return new ClienteBusiness().buscarTodos();	
-	//	}
+	    if(cliente.getRazaoSocial() == null || "".equals(cliente.getRazaoSocial()) ){
+	    	return new ClienteBusiness().buscarTodos();
+		    
+		}else{
+			return new ClienteBusiness().buscarPorRazaoSocial(cliente.getRazaoSocial());	
+		}
 
 		} catch (Exception e) {
 			e.printStackTrace();

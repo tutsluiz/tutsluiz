@@ -4374,17 +4374,17 @@ input[type="submit"].btn.btn-mini {
   padding-right: 20px;
   padding-left: 20px;
   background-color: #fafafa;
-  background-image: -moz-linear-gradient(top, #ffffff, #ffffff); /*#f2f2f2*/
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#ffffff));/*#f2f2f2*/
-  background-image: -webkit-linear-gradient(top, #ffffff, #ffffff);/*#f2f2f2*/
-  background-image: -o-linear-gradient(top, #ffffff, #ffffff);/*#f2f2f2*/
-  background-image: linear-gradient(to bottom, #ffffff, #ffffff);/*#f2f2f2*/
+  background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+  background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
   background-repeat: repeat-x;
   border: 1px solid #d4d4d4;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffffff', GradientType=0);/*#fff2f2f2*/
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
   *zoom: 1;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
      -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
@@ -5176,43 +5176,6 @@ input[type="submit"].btn.btn-mini {
   background-color: #fff;
 }
 
-/*!
- * Bootstrap Modal
- *
- * Copyright Jordan Schroter
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Boostrap 3 patch for for bootstrap-modal. Include BEFORE bootstrap-modal.css!
- */
-
-body.modal-open, 
-.modal-open .navbar-fixed-top, 
-.modal-open .navbar-fixed-bottom {
-  margin-right: 0;
-}
-
-.modal {
-  left: 50%;
-  bottom: auto;
-  right: auto;
-  padding: 0;
-  width: 500px;
-  margin-left: -250px;
-  background-color: #ffffff;
-  border: 1px solid #999999;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-  background-clip: padding-box;
-}
-
-.modal.container {
-  max-width: none;
-}
-
-
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -6003,7 +5966,7 @@ a.badge:focus {
 
 .accordion-inner {
   padding: 9px 15px;
-  border-top: 1px so6id #e5e5e5;
+  border-top: 1px solid #e5e5e5;
 }
 
 .carousel {
@@ -6157,7 +6120,7 @@ a.badge:focus {
 .hero-unit {
   padding: 60px;
   margin-bottom: 30px;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 200;
   line-height: 30px;
   color: inherit;
