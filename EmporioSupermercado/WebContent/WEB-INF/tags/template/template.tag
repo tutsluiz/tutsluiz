@@ -20,26 +20,24 @@
 		<meta name="description" content="">
 		<meta name="author" content="Arthur Luiz">
 
-		<meta name="viewport" content="width=device-width; initial-scale=1.0">
-
-		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-		<link rel="shortcut icon" href="/favicon.ico">
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-		
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">		
 		<!-- Link CSS do bootstrap -->
-
+        <link href="${pageContext.request.contextPath}/css/bootstrap-theme.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/bootstrap-modal.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/css/bootstrap-responsive.css" rel="stylesheet">
 		<link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet"/>
 		<link href="${pageContext.request.contextPath}/css/all.css" rel="stylesheet">
 		
+		<link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css">
+		<link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css">
+        <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/js/google-code-prettify/prettify.css">
+
+
+
+		<!-- Link JavaScript da aplicação -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 	    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.7.1.js"></script>
-	    <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
-	    
-
-        
-        
-
+	    <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.js"></script>  	    
 	</head>
 
 	<body>
@@ -105,10 +103,8 @@
   <div class="navbar">
   <div class="navbar-inner">
       <div class="nav-collapse collapse" id="corpo" >
-        <!-- .nav, .navbar-search, .navbar-form, etc -->   
-        
+        <!-- .nav, .navbar-search, .navbar-form, etc -->      
           <jsp:doBody />
-          
       </div>
  
     </div>

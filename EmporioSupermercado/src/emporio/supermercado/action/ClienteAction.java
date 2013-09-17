@@ -4,12 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.catalina.connector.Request;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.dispatcher.RequestMap;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -192,23 +190,24 @@ public class ClienteAction extends ActionSupport {
 		}
 	}
 	
-/*************************** Busca Clientes  *********************************
+/*************************** Busca Clientes  *********************************/
 	
-	@Action(value = "buscar", results = {
-			@Result(name = "sucesso", location = "/sistema/cliente.jsp"),
-			@Result(name="erro", location="/sistema/cliente.jsp")
-	}) 
 
-	public String buscar(){
+	public List<Cliente> getClientes() {
 		try {
-			clientes = new ClienteBusiness().buscarPorRazaoSocial(cliente.getRazaoSocial());
-			addActionMessage("Busca realizada com sucesso!");
-			return "sucesso";
-		} catch (Exception e) {
-			addActionError("Falha ao buscar cliente.");
-			return "erro";
+	    if(cliente.getRazaoSocial() == null || "".equals(cliente.getRazaoSocial()) ){
+	    	return new ClienteBusiness().buscarTodos();
+		    
+		}else{
+			return new ClienteBusiness().buscarPorRazaoSocial(cliente.getRazaoSocial());	
 		}
-	}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;	
+		}
+	}	
+
 	
 /*************************** GETTERS E SETTERS *******************************/	
 	
@@ -235,21 +234,6 @@ public class ClienteAction extends ActionSupport {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
 
-	public List<Cliente> getClientes() {
-		try {
-	    if(cliente.getRazaoSocial() == null || "".equals(cliente.getRazaoSocial()) ){
-	    	return new ClienteBusiness().buscarTodos();
-		    
-		}else{
-			return new ClienteBusiness().buscarPorRazaoSocial(cliente.getRazaoSocial());	
-		}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;	
-		}
-	}
 }
 
